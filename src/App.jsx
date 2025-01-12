@@ -4,6 +4,7 @@ import { Header } from "./components/Header";
 import { Home } from "./Pages/Home";
 import { About } from "./Pages/About";
 import { Contact } from "./Pages/Contact";
+import { NotFound } from "./Pages/NotFound";
 import "./App.css";
 
 function App() {
@@ -13,9 +14,10 @@ function App() {
         <Header />
         <main className="container content">
           <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/About" element={<About />}></Route>
-            <Route path="/Contact" element={<Contact />}></Route>
+            <Route path="/" element={<Home />} />
+            <Route path="/About" element={<About />} />
+            <Route path="/Contact" element={<Contact />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         <Footer />
