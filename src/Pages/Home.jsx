@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { getAllCategories } from "../api";
 import { Preloader } from "../components/Preloader";
 import { CategoryList } from "../components/CategoryList";
@@ -7,9 +7,9 @@ import { Search } from "../components/Search";
 
 function Home() {
   const [catalog, setCatalog] = useState([]);
-  const [filteredCatalog, setFilteredCatalog] = useState("");
+  const [filteredCatalog, setFilteredCatalog] = useState([]);
   const { pathname, search } = useLocation();
-  const { push } = useHistory();
+  const navigate = useNavigate();
 
   const handleSearch = (str) => {
     setFilteredCatalog(
@@ -17,26 +17,32 @@ function Home() {
         item.strCategory.toLowerCase().includes(str.toLowerCase())
       )
     );
-    push({
+    navigate({
       pathname,
       search: `?search=${str}`,
     });
   };
 
   useEffect(() => {
-    getAllCategories().then((data) => {
-      setCatalog(data.categories);
-      setFilteredCatalog(
-        search
-          ? data.categories.filter((item) =>
-              item.strCategory
-                .toLowerCase()
-                .includes(search.split("=")[1].toLowerCase())
-            )
-          : data.categories
-      );
-    });
+    const searchValue = search.includes("=")
+      ? search.split("=")[1].toLowerCase()
+      : "";
+    getAllCategories()
+      .then((data) => {
+        setCatalog(data.categories);
+        setFilteredCatalog(
+          searchValue
+            ? data.categories.filter((item) =>
+                item.strCategory.toLowerCase().includes(searchValue)
+              )
+            : data.categories
+        );
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
   }, [search]);
+
   return (
     <>
       <Search cb={handleSearch} />
