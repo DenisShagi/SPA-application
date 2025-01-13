@@ -5,6 +5,7 @@ import { Home } from "./Pages/Home";
 import { About } from "./Pages/About";
 import { Contact } from "./Pages/Contact";
 import { Category } from "./Pages/Category";
+import { Recipe } from "./Pages/Recipe";
 import { NotFound } from "./Pages/NotFound";
 import "./App.css";
 
@@ -19,6 +20,7 @@ function App() {
             <Route path="/About" element={<About />} />
             <Route path="/Contact" element={<Contact />} />
             <Route path="/category/:name" element={<Category />} />
+            <Route path="/meals/:id" element={<Recipe />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
